@@ -1,0 +1,34 @@
+name: Test
+on:
+  push:
+    branches:
+      - "**"
+    tags-ignore:
+      - "v*.*.*"
+  pull_request:
+    branches:
+      - "**"
+jobs:
+  tests:
+    name: Unit and integrations tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go: [1.13, 1.14, 1.15, 1.16]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Run tests
+        run: |
+          go test -v -race ./...
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.37
