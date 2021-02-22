@@ -56,20 +56,6 @@ The Goyave framework has an extensive documentation covering in-depth subjects a
 
 <a href="https://pkg.go.dev/github.com/System-Glitch/goyave/v3"><h3 align="center">pkg.go.dev</h3></a>
 
-## Contributing
-
-Thank you for considering contributing to the Goyave framework! You can find the contribution guide in the [documentation](https://goyave.dev/guide/contribution-guide.html).
-
-I have many ideas for the future of Goyave. I would be infinitely grateful to whoever want to support me and let me continue working on Goyave and making it better and better.
-
-You can support me on Github Sponsor or Patreon.
-
-<a href="https://github.com/sponsors/System-Glitch">❤ Sponsor me!</a>
-
-<a href="https://www.patreon.com/bePatron?u=25997573">
-    <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
 ## License
 
 This example project is MIT Licensed. Copyright © 2021 Jérémy LAMBERT (SystemGlitch) 
