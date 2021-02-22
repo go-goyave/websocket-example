@@ -4,6 +4,8 @@
 
 # Goyave Websocket Example
 
+![https://github.com/go-goyave/websocket-example/actions](https://github.com/go-goyave/websocket-example/workflows/Test/badge.svg)
+
 ## 🚧 Work in progress
 
 A minimal chat application to showcase [Goyave](https://github.com/System-Glitch/goyave)'s websocket feature.
