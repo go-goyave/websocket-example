@@ -46,7 +46,7 @@ A minimal chat application to showcase [Goyave](https://github.com/System-Glitch
 
 First, make your own configuration for your local environment. You can copy `config.example.json` to `config.json`.
 
-Run `go run main.go` in your project's directory to start the server, then open your browser to `http://localhost:8080/index.html`.
+Run `go run main.go` in your project's directory to start the server, then open your browser to `http://localhost:8080`.
 
 ## Learning Goyave
 
