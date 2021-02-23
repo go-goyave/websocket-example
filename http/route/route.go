@@ -18,6 +18,6 @@ func Register(router *goyave.Router) {
 	go hub.Run()
 
 	upgrader := websocket.Upgrader{}
-	router.Get("/chat", upgrader.Handler(hub.Serve))
+	router.Get("/chat", upgrader.Handler(hub.Serve)).Validate(chat.JoinRequest)
 	router.Static("/", "resources/template", false)
 }

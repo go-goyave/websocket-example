@@ -17,6 +17,35 @@
                 }
             }
 
+            function connect(name) {
+                conn = new WebSocket("ws://" + document.location.host + "/chat?name=" + name);
+                conn.onclose = function (evt) {
+                    var item = document.createElement("div");
+                    item.innerHTML = "<b>Connection closed.</b>";
+                    document.getElementById("join-form").style = "display: block"
+                    document.getElementById("form").style = "display: none"
+                    appendLog(item);
+                };
+                conn.onmessage = function (evt) {
+                    var messages = evt.data.split('\n');
+                    for (var i = 0; i < messages.length; i++) {
+                        var item = document.createElement("div");
+                        item.innerText = messages[i];
+                        appendLog(item);
+                    }
+                };
+                document.getElementById("join-form").style = "display: none"
+                document.getElementById("form").style = "display: block"
+            }
+
+            document.getElementById("join-form").onsubmit = function () {
+                if (!window["WebSocket"]) {
+                    return false;
+                }
+                connect(document.getElementById("name-input").value)
+                return false;
+            };
+
             document.getElementById("form").onsubmit = function () {
                 if (!conn) {
                     return false;
@@ -29,27 +58,12 @@
                 return false;
             };
 
-            if (window["WebSocket"]) {
-                conn = new WebSocket("ws://" + document.location.host + "/chat");
-                conn.onclose = function (evt) {
-                    var item = document.createElement("div");
-                    item.innerHTML = "<b>Connection closed.</b>";
-                    appendLog(item);
-                };
-                conn.onmessage = function (evt) {
-                    var messages = evt.data.split('\n');
-                    for (var i = 0; i < messages.length; i++) {
-                        var item = document.createElement("div");
-                        item.innerText = messages[i];
-                        appendLog(item);
-                    }
-                };
-            } else {
+            if (!window["WebSocket"]) {
                 var item = document.createElement("div");
                 item.innerHTML = "<b>Your browser does not support WebSockets.</b>";
                 appendLog(item);
-            }
-        };
+            };
+        }
     </script>
     <style type="text/css">
         html {
@@ -77,7 +91,7 @@
             overflow: auto;
         }
 
-        #form {
+        .form {
             padding: 0 0.5em 0 0.5em;
             margin: 0;
             position: absolute;
@@ -91,9 +105,13 @@
 
 <body>
     <div id="log"></div>
-    <form id="form">
+    <form id="join-form" class="form">
+        <input type="submit" value="Join" />
+        <input type="text" id="name-input" min="3" max="50" required placeholder="Enter a username..." autofocus />
+    </form>
+    <form id="form" class="form" style="display:none">
         <input type="submit" value="Send" />
-        <input type="text" id="msg" size="64" autofocus />
+        <input type="text" id="msg" size="64" required autofocus />
     </form>
 </body>
 

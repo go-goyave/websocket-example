@@ -80,6 +80,7 @@ func (h *Hub) Run() {
 // Serve is the websocket Handler for the chat clients.
 func (h *Hub) Serve(c *websocket.Conn, request *goyave.Request) error {
 	client := &Client{
+		Name:      request.String("name"),
 		hub:       h,
 		conn:      c,
 		send:      make(chan []byte, 256),
@@ -87,8 +88,8 @@ func (h *Hub) Serve(c *websocket.Conn, request *goyave.Request) error {
 		writeErr:  make(chan error, 1),
 		waitGroup: sync.WaitGroup{},
 	}
-	h.broadcast <- []byte("Someone joined.")
+	h.broadcast <- []byte(client.Name + " joined.")
 	err := client.pump()
-	h.broadcast <- []byte("Someone left.")
+	h.broadcast <- []byte(client.Name + " left.")
 	return err
 }

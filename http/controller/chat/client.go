@@ -35,6 +35,8 @@ var (
 type Client struct {
 	hub *Hub
 
+	Name string
+
 	// The websocket connection.
 	conn *websocket.Conn
 
@@ -90,7 +92,7 @@ func (c *Client) readPump() {
 			return
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		c.hub.broadcast <- message
+		c.hub.broadcast <- []byte(fmt.Sprintf("%s: %s", c.Name, message))
 	}
 }
 
