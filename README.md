@@ -8,14 +8,9 @@
 
 ## 🚧 Work in progress
 
-A minimal chat application to showcase [Goyave](https://github.com/System-Glitch/goyave)'s websocket feature.
+A minimal chat application to showcase [Goyave](https://github.com/System-Glitch/goyave)'s websocket feature. This project is based on [Gorilla's chat example](https://github.com/gorilla/websocket/tree/master/examples/chat).
 
 ## Getting Started
-
-### Requirements
-
-- Go 1.13+
-- Go modules
 
 ### Directory structure
 

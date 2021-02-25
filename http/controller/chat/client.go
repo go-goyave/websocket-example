@@ -3,10 +3,8 @@ package chat
 import (
 	"bytes"
 	"fmt"
-	"sync"
 	"time"
 
-	"github.com/System-Glitch/goyave/v3"
 	"github.com/System-Glitch/goyave/v3/websocket"
 
 	ws "github.com/gorilla/websocket"
@@ -45,37 +43,32 @@ type Client struct {
 
 	readErr  chan error
 	writeErr chan error
-
-	waitGroup sync.WaitGroup
 }
 
 func (c *Client) pump() error {
-	goyave.Logger.Println("pump")
 	c.hub.register <- c
-	c.waitGroup.Add(2)
 	go c.writePump()
 	go c.readPump()
 
 	var err error
 	select {
 	case e := <-c.readErr:
-		goyave.Logger.Println("read err received")
 		err = e
 	case e := <-c.writeErr:
-		goyave.Logger.Println("write err received")
 		err = e
+		if err == nil {
+			// Hub closing, wait for readPump to return
+			<-c.readErr
+
+		}
 	}
 
-	goyave.Logger.Println("wait")
-	c.waitGroup.Wait()
-	goyave.Logger.Println("return", err)
 	return err
 }
 
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.unregister <- c
-		c.waitGroup.Done()
+		c.hub.unregister <- c // TODO this goroutine can be stuck forever
 	}()
 	c.conn.SetReadLimit(maxMessageSize)
 	c.conn.SetReadDeadline(time.Now().Add(pongWait))
@@ -84,8 +77,7 @@ func (c *Client) readPump() {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsCloseError(err) {
-				goyave.Logger.Println("closed")
-				c.readErr <- nil
+				c.readErr <- err
 				return
 			}
 			c.readErr <- fmt.Errorf("read: %w", err)
@@ -100,14 +92,12 @@ func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
-		c.waitGroup.Done()
 	}()
 	for {
 		select {
 		case message, ok := <-c.send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				goyave.Logger.Println("channel closed")
 				// The hub closed the channel.
 				c.writeErr <- nil
 				return

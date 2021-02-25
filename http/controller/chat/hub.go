@@ -27,7 +27,7 @@ type Hub struct {
 // NewHub create a new chat Hub.
 func NewHub() *Hub {
 	return &Hub{
-		broadcast:  make(chan []byte),
+		broadcast:  make(chan []byte, 256),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]struct{}),
@@ -43,19 +43,27 @@ func (h *Hub) Run() {
 	done := make(chan struct{}, 1)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	defer goyave.Logger.Println("run return")
 	goyave.RegisterShutdownHook(func() {
-		goyave.Logger.Println("shutdown hook")
 		cancel()
 		<-done
-		goyave.Logger.Println("done received")
 	})
-	goyave.Logger.Println("hub run")
 	for {
 		select {
 		case <-ctx.Done():
+			wg := &sync.WaitGroup{}
+			wg.Add(len(h.clients))
+			for client := range h.clients {
+				delete(h.clients, client)
+				go func(c *Client) {
+					close(c.send)
+					if err := c.conn.CloseNormal(); err != nil {
+						goyave.ErrLogger.Println(err)
+					}
+					wg.Done()
+				}(client)
+			}
+			wg.Wait()
 			done <- struct{}{}
-			// TODO graceful shutdown of all active connections
 			return
 		case client := <-h.register:
 			h.clients[client] = struct{}{}
@@ -80,16 +88,15 @@ func (h *Hub) Run() {
 // Serve is the websocket Handler for the chat clients.
 func (h *Hub) Serve(c *websocket.Conn, request *goyave.Request) error {
 	client := &Client{
-		Name:      request.String("name"),
-		hub:       h,
-		conn:      c,
-		send:      make(chan []byte, 256),
-		readErr:   make(chan error, 1),
-		writeErr:  make(chan error, 1),
-		waitGroup: sync.WaitGroup{},
+		Name:     request.String("name"),
+		hub:      h,
+		conn:     c,
+		send:     make(chan []byte, 256),
+		readErr:  make(chan error, 1),
+		writeErr: make(chan error, 1),
 	}
 	h.broadcast <- []byte(client.Name + " joined.")
 	err := client.pump()
-	h.broadcast <- []byte(client.Name + " left.")
+	h.broadcast <- []byte(client.Name + " left.") // TODO this can be blocking if the chan is full
 	return err
 }
