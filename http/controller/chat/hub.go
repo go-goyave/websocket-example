@@ -59,6 +59,7 @@ func (h *Hub) Run() {
 					if err := c.conn.CloseNormal(); err != nil {
 						goyave.ErrLogger.Println(err)
 					}
+					<-h.unregister // Wait for readPump to return
 					wg.Done()
 				}(client)
 			}

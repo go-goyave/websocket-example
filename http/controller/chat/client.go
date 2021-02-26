@@ -68,7 +68,7 @@ func (c *Client) pump() error {
 
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.unregister <- c // TODO this goroutine can be stuck forever
+		c.hub.unregister <- c
 	}()
 	c.conn.SetReadLimit(maxMessageSize)
 	c.conn.SetReadDeadline(time.Now().Add(pongWait))
