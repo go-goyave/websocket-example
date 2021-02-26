@@ -22,15 +22,21 @@ type Hub struct {
 
 	// Unregister requests from clients.
 	unregister chan *Client
+
+	ctx    context.Context
+	cancel context.CancelFunc
 }
 
 // NewHub create a new chat Hub.
 func NewHub() *Hub {
+	ctx, cancel := context.WithCancel(context.Background())
 	return &Hub{
 		broadcast:  make(chan []byte, 256),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]struct{}),
+		ctx:        ctx,
+		cancel:     cancel,
 	}
 }
 
@@ -41,15 +47,14 @@ func NewHub() *Hub {
 // and closes all active connections before goyave.Start() returns.
 func (h *Hub) Run() {
 	done := make(chan struct{}, 1)
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	defer h.cancel()
 	goyave.RegisterShutdownHook(func() {
-		cancel()
+		h.cancel()
 		<-done
 	})
 	for {
 		select {
-		case <-ctx.Done():
+		case <-h.ctx.Done():
 			wg := &sync.WaitGroup{}
 			wg.Add(len(h.clients))
 			for client := range h.clients {
@@ -96,8 +101,18 @@ func (h *Hub) Serve(c *websocket.Conn, request *goyave.Request) error {
 		readErr:  make(chan error, 1),
 		writeErr: make(chan error, 1),
 	}
-	h.broadcast <- []byte(client.Name + " joined.")
+	h.Broadcast([]byte(client.Name + " joined."))
 	err := client.pump()
-	h.broadcast <- []byte(client.Name + " left.") // TODO this can be blocking if the chan is full
+	h.Broadcast([]byte(client.Name + " left."))
+
 	return err
+}
+
+// Broadcast send a message to all connected clients. This method is concurrently safe
+// and doesn't do anything is the Hub's context is canceled.
+func (h *Hub) Broadcast(message []byte) {
+	select {
+	case <-h.ctx.Done(): // Don't send if the hub is shutting down
+	case h.broadcast <- message:
+	}
 }
