@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/System-Glitch/goyave/v3/websocket"
+	"goyave.dev/goyave/v3/websocket"
 
 	ws "github.com/gorilla/websocket"
 )

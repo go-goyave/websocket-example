@@ -1,6 +1,6 @@
 package chat
 
-import "github.com/System-Glitch/goyave/v3/validation"
+import "goyave.dev/goyave/v3/validation"
 
 var (
 	// JoinRequest the validation rules joining the chat room.

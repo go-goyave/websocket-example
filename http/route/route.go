@@ -1,11 +1,11 @@
 package route
 
 import (
-	"github.com/System-Glitch/goyave/v3"
-	"github.com/System-Glitch/goyave/v3/cors"
-	"github.com/System-Glitch/goyave/v3/log"
-	"github.com/System-Glitch/goyave/v3/websocket"
 	"github.com/go-goyave/websocket-example/http/controller/chat"
+	"goyave.dev/goyave/v3"
+	"goyave.dev/goyave/v3/cors"
+	"goyave.dev/goyave/v3/log"
+	"goyave.dev/goyave/v3/websocket"
 )
 
 // Register all the application routes. This is the main route registrer.

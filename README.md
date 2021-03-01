@@ -1,14 +1,12 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/System-Glitch/goyave/master/resources/img/logo/goyave_text.png" alt="Goyave Logo" width="550"/>
+    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text.png" alt="Goyave Logo" width="550"/>
 </p>
 
 # Goyave Websocket Example
 
 ![https://github.com/go-goyave/websocket-example/actions](https://github.com/go-goyave/websocket-example/workflows/Test/badge.svg)
 
-## 🚧 Work in progress
-
-A minimal chat application to showcase [Goyave](https://github.com/System-Glitch/goyave)'s websocket feature. This project is based on [Gorilla's chat example](https://github.com/gorilla/websocket/tree/master/examples/chat).
+A minimal chat application to showcase [Goyave](https://github.com/go-goyave/goyave)'s websocket feature. This project is based on [Gorilla's chat example](https://github.com/gorilla/websocket/tree/master/examples/chat).
 
 ## Getting Started
 
@@ -49,7 +47,7 @@ The Goyave framework has an extensive documentation covering in-depth subjects a
 
 <a href="https://goyave.dev/guide/installation"><h3 align="center">Read the documentation</h3></a>
 
-<a href="https://pkg.go.dev/github.com/System-Glitch/goyave/v3"><h3 align="center">pkg.go.dev</h3></a>
+<a href="https://pkg.go.dev/github.com/go-goyave/goyave/v3"><h3 align="center">pkg.go.dev</h3></a>
 
 ## License
 
