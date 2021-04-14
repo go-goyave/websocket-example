@@ -31,18 +31,19 @@ var (
 
 // Client is a middleman between the websocket connection and the hub.
 type Client struct {
-	hub *Hub
-
-	Name string
-
-	// The websocket connection.
-	conn *websocket.Conn
 
 	// Buffered channel of outbound messages.
 	send chan []byte
 
 	readErr  chan error
 	writeErr chan error
+
+	// The websocket connection.
+	conn *websocket.Conn
+
+	hub *Hub
+
+	Name string
 }
 
 func (c *Client) pump() error {
