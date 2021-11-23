@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"goyave.dev/goyave/v3"
+	"goyave.dev/goyave/v4"
 )
 
 type ChatTestSuite struct {

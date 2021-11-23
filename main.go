@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-goyave/websocket-example/http/route"
 
-	"goyave.dev/goyave/v3"
+	"goyave.dev/goyave/v4"
 )
 
 func main() {

@@ -2,17 +2,17 @@ package route
 
 import (
 	"github.com/go-goyave/websocket-example/http/controller/chat"
-	"goyave.dev/goyave/v3"
-	"goyave.dev/goyave/v3/cors"
-	"goyave.dev/goyave/v3/log"
-	"goyave.dev/goyave/v3/websocket"
+	"goyave.dev/goyave/v4"
+	"goyave.dev/goyave/v4/cors"
+	"goyave.dev/goyave/v4/log"
+	"goyave.dev/goyave/v4/websocket"
 )
 
 // Register all the application routes. This is the main route registrer.
 func Register(router *goyave.Router) {
 
 	router.CORS(cors.Default())
-	router.Middleware(log.CombinedLogMiddleware())
+	router.GlobalMiddleware(log.CombinedLogMiddleware())
 
 	hub := chat.NewHub()
 	go hub.Run()

@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"goyave.dev/goyave/v3"
-	"goyave.dev/goyave/v3/websocket"
+	"goyave.dev/goyave/v4"
+	"goyave.dev/goyave/v4/websocket"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the

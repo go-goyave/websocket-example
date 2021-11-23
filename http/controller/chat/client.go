@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"goyave.dev/goyave/v3/websocket"
+	"goyave.dev/goyave/v4/websocket"
 
 	ws "github.com/gorilla/websocket"
 )
