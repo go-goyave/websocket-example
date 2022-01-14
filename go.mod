@@ -4,5 +4,5 @@ go 1.16
 
 require (
 	github.com/gorilla/websocket v1.4.2
-	goyave.dev/goyave/v4 v4.0.0-rc2
+	goyave.dev/goyave/v4 v4.0.0
 )
