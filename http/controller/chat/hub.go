@@ -4,13 +4,15 @@ import (
 	"context"
 	"sync"
 
-	"goyave.dev/goyave/v4"
-	"goyave.dev/goyave/v4/websocket"
+	"goyave.dev/goyave/v5"
+	"goyave.dev/goyave/v5/websocket"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
+	goyave.Component
+
 	// Registered clients.
 	clients map[*Client]struct{}
 
@@ -28,9 +30,9 @@ type Hub struct {
 }
 
 // NewHub create a new chat Hub.
-func NewHub() *Hub {
+func NewHub(server *goyave.Server) *Hub {
 	ctx, cancel := context.WithCancel(context.Background())
-	return &Hub{
+	hub := &Hub{
 		broadcast:  make(chan []byte, 256),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
@@ -38,6 +40,8 @@ func NewHub() *Hub {
 		ctx:        ctx,
 		cancel:     cancel,
 	}
+	hub.Init(server)
+	return hub
 }
 
 // Run the Hub loop. Should be run in a goroutine. This method
@@ -48,9 +52,10 @@ func NewHub() *Hub {
 func (h *Hub) Run() {
 	done := make(chan struct{}, 1)
 	defer h.cancel()
-	goyave.RegisterShutdownHook(func() {
+	h.Server().RegisterShutdownHook(func(_ *goyave.Server) {
 		h.cancel()
 		<-done
+		h.Logger().Info("Chat hub has shut down")
 	})
 	for {
 		select {
@@ -62,7 +67,7 @@ func (h *Hub) Run() {
 				go func(c *Client) {
 					close(c.send)
 					if err := c.conn.CloseNormal(); err != nil {
-						goyave.ErrLogger.Println(err)
+						h.Logger().Error(err)
 					}
 					<-h.unregister // Wait for readPump to return
 					wg.Done()
@@ -91,10 +96,14 @@ func (h *Hub) Run() {
 	}
 }
 
+func (h *Hub) RegisterRoute(router *goyave.Router, handler goyave.Handler) {
+	router.Get("", handler).ValidateQuery(JoinRequest)
+}
+
 // Serve is the websocket Handler for the chat clients.
 func (h *Hub) Serve(c *websocket.Conn, request *goyave.Request) error {
 	client := &Client{
-		Name:     request.String("name"),
+		Name:     request.Query["name"].(string),
 		hub:      h,
 		conn:     c,
 		send:     make(chan []byte, 256),

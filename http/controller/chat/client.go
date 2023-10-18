@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"goyave.dev/goyave/v4/websocket"
+	"goyave.dev/goyave/v5/util/errors"
+	"goyave.dev/goyave/v5/websocket"
 
 	ws "github.com/gorilla/websocket"
 )
@@ -81,7 +82,7 @@ func (c *Client) readPump() {
 				c.readErr <- err
 				return
 			}
-			c.readErr <- fmt.Errorf("read: %w", err)
+			c.readErr <- errors.New(fmt.Errorf("read: %w", err))
 			return
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
@@ -106,7 +107,7 @@ func (c *Client) writePump() {
 
 			w, err := c.conn.NextWriter(ws.TextMessage)
 			if err != nil {
-				c.writeErr <- fmt.Errorf("next writer: %w", err)
+				c.writeErr <- errors.New(fmt.Errorf("next writer: %w", err))
 				return
 			}
 			w.Write(message)
@@ -119,13 +120,13 @@ func (c *Client) writePump() {
 			}
 
 			if err := w.Close(); err != nil {
-				c.writeErr <- fmt.Errorf("writer close: %w", err)
+				c.writeErr <- errors.New(fmt.Errorf("writer close: %w", err))
 				return
 			}
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(ws.PingMessage, nil); err != nil {
-				c.writeErr <- fmt.Errorf("ping: %w", err)
+				c.writeErr <- errors.New(fmt.Errorf("ping: %w", err))
 				return
 			}
 		}

@@ -1,5 +1,6 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text.png" alt="Goyave Logo" width="550"/>
+    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text.png#gh-light-mode-only" alt="Goyave Logo" width="550"/>
+    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text_dark.png#gh-dark-mode-only" alt="Goyave Logo" width="550"/>
 </p>
 
 # Goyave Websocket Example
@@ -7,6 +8,8 @@
 ![https://github.com/go-goyave/websocket-example/actions](https://github.com/go-goyave/websocket-example/workflows/Test/badge.svg)
 
 A minimal chat application to showcase [Goyave](https://github.com/go-goyave/goyave)'s websocket feature. This project is based on [Gorilla's chat example](https://github.com/gorilla/websocket/tree/master/examples/chat).
+
+**Disclaimer:** This example project cannot be used in a real-life scenario, as you would need to be able to serve clients across multiple instances of the application. This is a typical scenario in cloud environments. The hub in this example could use a PUB/SUB mechanism (for example with [redis](https://redis.io/docs/interact/pubsub/)) to solve this issue.
 
 ## Getting Started
 
@@ -24,14 +27,12 @@ A minimal chat application to showcase [Goyave](https://github.com/go-goyave/goy
 │   └── template             // Static resources
 │       └── ...
 │
-├── test                     // Functional tests
-|   └── ...
-|
 ├── .gitignore
 ├── .golangci.yml            // Settings for the Golangci-lint linter
 ├── config.example.json      // Example config for local development
 ├── config.test.json         // Config file used for tests
 ├── go.mod
+├── go.sum
 └── main.go                  // Application entrypoint
 ```
 
@@ -47,10 +48,10 @@ The Goyave framework has an extensive documentation covering in-depth subjects a
 
 <a href="https://goyave.dev/guide/installation"><h3 align="center">Read the documentation</h3></a>
 
-<a href="https://pkg.go.dev/goyave.dev/goyave/v4"><h3 align="center">pkg.go.dev</h3></a>
+<a href="https://pkg.go.dev/goyave.dev/goyave/v5"><h3 align="center">pkg.go.dev</h3></a>
 
 ## License
 
-This example project is MIT Licensed. Copyright © 2021 Jérémy LAMBERT (SystemGlitch) 
+This example project is MIT Licensed. Copyright © 2023 Jérémy LAMBERT (SystemGlitch) 
 
-The Goyave framework is MIT Licensed. Copyright © 2019 Jérémy LAMBERT (SystemGlitch)
+The Goyave framework is MIT Licensed. Copyright © 2023 Jérémy LAMBERT (SystemGlitch)
