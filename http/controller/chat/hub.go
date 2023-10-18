@@ -96,6 +96,7 @@ func (h *Hub) Run() {
 	}
 }
 
+// RegisterRoute regsiters the websocket route with validation.
 func (h *Hub) RegisterRoute(router *goyave.Router, handler goyave.Handler) {
 	router.Get("", handler).ValidateQuery(JoinRequest)
 }
