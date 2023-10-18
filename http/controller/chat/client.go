@@ -3,6 +3,7 @@ package chat
 import (
 	"bytes"
 	"fmt"
+	"io"
 	"time"
 
 	"goyave.dev/goyave/v5/util/errors"
@@ -73,8 +74,8 @@ func (c *Client) readPump() {
 		c.hub.unregister <- c
 	}()
 	c.conn.SetReadLimit(maxMessageSize)
-	c.conn.SetReadDeadline(time.Now().Add(pongWait))
-	c.conn.SetPongHandler(func(string) error { c.conn.SetReadDeadline(time.Now().Add(pongWait)); return nil })
+	_ = c.conn.SetReadDeadline(time.Now().Add(pongWait))
+	c.conn.SetPongHandler(func(string) error { return c.conn.SetReadDeadline(time.Now().Add(pongWait)) })
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
@@ -98,7 +99,7 @@ func (c *Client) writePump() {
 	for {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// The hub closed the channel.
 				c.writeErr <- nil
@@ -110,13 +111,19 @@ func (c *Client) writePump() {
 				c.writeErr <- errors.New(fmt.Errorf("next writer: %w", err))
 				return
 			}
-			w.Write(message)
+			if !c.write(w, message) {
+				return
+			}
 
 			// Add queued chat messages to the current websocket message.
 			n := len(c.send)
 			for i := 0; i < n; i++ {
-				w.Write(newline)
-				w.Write(<-c.send)
+				if !c.write(w, newline) {
+					return
+				}
+				if !c.write(w, <-c.send) {
+					return
+				}
 			}
 
 			if err := w.Close(); err != nil {
@@ -124,11 +131,20 @@ func (c *Client) writePump() {
 				return
 			}
 		case <-ticker.C:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(ws.PingMessage, nil); err != nil {
 				c.writeErr <- errors.New(fmt.Errorf("ping: %w", err))
 				return
 			}
 		}
 	}
+}
+
+func (c *Client) write(w io.Writer, p []byte) bool {
+	_, err := w.Write(p)
+	if err != nil {
+		c.writeErr <- errors.New(fmt.Errorf("write: %w", err))
+		return false
+	}
+	return true
 }
