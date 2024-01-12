@@ -2,6 +2,8 @@ package route
 
 import (
 	"github.com/go-goyave/websocket-example/http/controller/chat"
+	"github.com/go-goyave/websocket-example/service"
+	"github.com/go-goyave/websocket-example/service/static"
 	"goyave.dev/goyave/v5"
 	"goyave.dev/goyave/v5/cors"
 	"goyave.dev/goyave/v5/log"
@@ -20,5 +22,7 @@ func Register(server *goyave.Server, router *goyave.Router) {
 	go hub.Run()
 
 	router.Subrouter("/chat").Controller(websocket.New(hub))
-	router.Static("/", "resources/template", false)
+
+	resources := server.Service(service.Static).(*static.Service).FS()
+	router.Static(resources, "/", false)
 }
