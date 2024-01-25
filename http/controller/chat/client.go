@@ -83,7 +83,7 @@ func (c *Client) readPump() {
 				c.readErr <- err
 				return
 			}
-			c.readErr <- errors.New(fmt.Errorf("read: %w", err))
+			c.readErr <- errors.Errorf("read: %w", err)
 			return
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
@@ -108,7 +108,7 @@ func (c *Client) writePump() {
 
 			w, err := c.conn.NextWriter(ws.TextMessage)
 			if err != nil {
-				c.writeErr <- errors.New(fmt.Errorf("next writer: %w", err))
+				c.writeErr <- errors.Errorf("next writer: %w", err)
 				return
 			}
 			if !c.write(w, message) {
@@ -127,13 +127,13 @@ func (c *Client) writePump() {
 			}
 
 			if err := w.Close(); err != nil {
-				c.writeErr <- errors.New(fmt.Errorf("writer close: %w", err))
+				c.writeErr <- errors.Errorf("writer close: %w", err)
 				return
 			}
 		case <-ticker.C:
 			_ = c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(ws.PingMessage, nil); err != nil {
-				c.writeErr <- errors.New(fmt.Errorf("ping: %w", err))
+				c.writeErr <- errors.Errorf("ping: %w", err)
 				return
 			}
 		}
@@ -143,7 +143,7 @@ func (c *Client) writePump() {
 func (c *Client) write(w io.Writer, p []byte) bool {
 	_, err := w.Write(p)
 	if err != nil {
-		c.writeErr <- errors.New(fmt.Errorf("write: %w", err))
+		c.writeErr <- errors.Errorf("write: %w", err)
 		return false
 	}
 	return true
