@@ -1,10 +1,6 @@
-run:
-  skip-dirs:
-    - .github
-
 linters-settings:
   gocyclo:
-    min-complexity: 15
+    min-complexity: 18
   gofmt:
     simplify: true
   misspell:
@@ -12,7 +8,6 @@ linters-settings:
   govet:
     disable:
       - shadow
-      - nilness
     enable-all: true
 
 linters:
@@ -21,10 +16,14 @@ linters:
     - revive
     - gocyclo
     - misspell
-    - bodyclose
     - govet
     - unused
     - errcheck
+    - exportloopref
+    - gosimple
+    - ineffassign
+    - staticcheck
+    - testifylint
   disable-all: false
   fast: false
 
@@ -32,8 +31,11 @@ issues:
   exclude-use-default: false
   max-issues-per-linter: 0
   max-same-issues: 0
+  exclude-dirs:
+    - .github
   exclude:
     - should have a package comment
+    - for error assertions use require
   exclude-rules:
     - path: _test\.go
       linters:

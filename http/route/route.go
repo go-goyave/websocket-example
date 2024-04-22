@@ -13,7 +13,6 @@ import (
 
 // Register all the application routes. This is the main route registrer.
 func Register(server *goyave.Server, router *goyave.Router) {
-
 	router.CORS(cors.Default())
 	router.GlobalMiddleware(&parse.Middleware{})
 	router.GlobalMiddleware(log.CombinedLogMiddleware())

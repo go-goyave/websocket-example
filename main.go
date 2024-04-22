@@ -17,7 +17,6 @@ import (
 var resources embed.FS
 
 func main() {
-
 	resourcesEmbed := fsutil.NewEmbed(resources)
 
 	server, err := goyave.New(goyave.Options{})

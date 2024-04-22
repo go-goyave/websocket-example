@@ -18,8 +18,8 @@ A minimal chat application to showcase [Goyave](https://github.com/go-goyave/goy
 ```
 .
 ├── http
-│   ├── controller           // Business logic of the application
-│   │   └── ...
+│   ├── controller
+│   │   └── chat             // Chat hub implementation
 │   └── route
 │       └── route.go         // Routes definition
 │
@@ -46,12 +46,12 @@ Run `go run main.go` in your project's directory to start the server, then open 
 
 The Goyave framework has an extensive documentation covering in-depth subjects and teaching you how to run a project using Goyave from setup to deployment.
 
-<a href="https://goyave.dev/guide/installation"><h3 align="center">Read the documentation</h3></a>
+<a href="https://goyave.dev/getting-started/installation"><h3 align="center">Read the documentation</h3></a>
 
 <a href="https://pkg.go.dev/goyave.dev/goyave/v5"><h3 align="center">pkg.go.dev</h3></a>
 
 ## License
 
-This example project is MIT Licensed. Copyright © 2023 Jérémy LAMBERT (SystemGlitch) 
+This example project is MIT Licensed. Copyright © 2024 Jérémy LAMBERT (SystemGlitch) 
 
-The Goyave framework is MIT Licensed. Copyright © 2023 Jérémy LAMBERT (SystemGlitch)
+The Goyave framework is MIT Licensed. Copyright © 2024 Jérémy LAMBERT (SystemGlitch)
