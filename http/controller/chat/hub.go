@@ -30,7 +30,7 @@ type Hub struct {
 }
 
 // NewHub create a new chat Hub.
-func NewHub(server *goyave.Server) *Hub {
+func NewHub() *Hub {
 	ctx, cancel := context.WithCancel(context.Background())
 	hub := &Hub{
 		broadcast:  make(chan []byte, 256),
@@ -40,7 +40,6 @@ func NewHub(server *goyave.Server) *Hub {
 		ctx:        ctx,
 		cancel:     cancel,
 	}
-	hub.Init(server)
 	return hub
 }
 

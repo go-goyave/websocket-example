@@ -17,10 +17,10 @@ func Register(server *goyave.Server, router *goyave.Router) {
 	router.GlobalMiddleware(&parse.Middleware{})
 	router.GlobalMiddleware(log.CombinedLogMiddleware())
 
-	hub := chat.NewHub(server)
-	go hub.Run()
+	hub := chat.NewHub()
 
 	router.Subrouter("/chat").Controller(websocket.New(hub))
+	go hub.Run()
 
 	resources := server.Service(service.Static).(*static.Service).FS()
 	router.Static(resources, "/", false)
