@@ -4,7 +4,7 @@ go 1.22
 
 require (
 	github.com/gorilla/websocket v1.5.1
-	goyave.dev/goyave/v5 v5.0.0-rc9
+	goyave.dev/goyave/v5 v5.0.0-rc10
 )
 
 require (
