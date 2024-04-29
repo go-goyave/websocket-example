@@ -2,13 +2,13 @@
     "app": {
         "name": "goyave-websocket-example",
         "environment": "localhost",
-        "debug": true,
+        "debug": false,
         "defaultLanguage": "en-US"
     },
     "server": {
         "host": "127.0.0.1",
         "domain": "",
-        "port": 8080,
+        "port": 0,
         "maxUploadSize": 10
     }
 }
