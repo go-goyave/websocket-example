@@ -1,6 +1,6 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text.png#gh-light-mode-only" alt="Goyave Logo" width="550"/>
-    <img src="https://raw.githubusercontent.com/go-goyave/goyave/master/resources/img/logo/goyave_text_dark.png#gh-dark-mode-only" alt="Goyave Logo" width="550"/>
+    <img src="./.github/img/goyave_banner.png#gh-light-mode-only" alt="Goyave Logo" width="550"/>
+    <img src="./.github/img/goyave_banner_dark.png#gh-dark-mode-only" alt="Goyave Logo" width="550"/>
 </p>
 
 # Goyave Websocket Example
@@ -42,16 +42,7 @@ First, make your own configuration for your local environment. You can copy `con
 
 Run `go run main.go` in your project's directory to start the server, then open your browser to `http://localhost:8080`.
 
-## Learning Goyave
+## Resources
 
-The Goyave framework has an extensive documentation covering in-depth subjects and teaching you how to run a project using Goyave from setup to deployment.
-
-<a href="https://goyave.dev/getting-started/installation"><h3 align="center">Read the documentation</h3></a>
-
-<a href="https://pkg.go.dev/goyave.dev/goyave/v5"><h3 align="center">pkg.go.dev</h3></a>
-
-## License
-
-This example project is MIT Licensed. Copyright © 2024 Jérémy LAMBERT (SystemGlitch) 
-
-The Goyave framework is MIT Licensed. Copyright © 2024 Jérémy LAMBERT (SystemGlitch)
+- [Documentation](https://goyave.dev)
+- [go.pkg.dev](https://pkg.go.dev/goyave.dev/goyave/v5)
