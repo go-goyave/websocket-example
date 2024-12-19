@@ -9,6 +9,20 @@ linters-settings:
     disable:
       - shadow
     enable-all: true
+  testifylint:
+    disable:
+      - require-error
+      - error-nil
+      - formatter
+      - encoded-compare
+  revive:
+    rules:
+      - name: var-naming
+        arguments:
+          - [] # AllowList
+          - ["DTO"] # DenyList
+      - name: unused-parameter
+        disabled: false
 
 linters:
   enable:
@@ -19,11 +33,14 @@ linters:
     - govet
     - unused
     - errcheck
-    - exportloopref
+    - copyloopvar
     - gosimple
     - ineffassign
     - staticcheck
     - testifylint
+    - whitespace
+    - bodyclose
+    - inamedparam
   disable-all: false
   fast: false
 
@@ -33,9 +50,9 @@ issues:
   max-same-issues: 0
   exclude-dirs:
     - .github
+    - resources
   exclude:
     - should have a package comment
-    - for error assertions use require
   exclude-rules:
     - path: _test\.go
       linters:

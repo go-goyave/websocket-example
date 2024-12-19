@@ -62,7 +62,6 @@ func (c *Client) pump() error {
 		if err == nil {
 			// Hub closing, wait for readPump to return
 			<-c.readErr
-
 		}
 	}
 
