@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/stretchr/testify v1.10.0
-	goyave.dev/goyave/v5 v5.5.4
+	goyave.dev/goyave/v5 v5.5.5
 )
 
 require (
