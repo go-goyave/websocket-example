@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/gorilla/websocket v1.5.3
 	github.com/stretchr/testify v1.10.0
-	goyave.dev/goyave/v5 v5.5.5
+	goyave.dev/goyave/v5 v5.6.0
 )
 
 require (
@@ -16,7 +16,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/samber/lo v1.49.1 // indirect
-	golang.org/x/text v0.22.0 // indirect
+	golang.org/x/text v0.24.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/gorm v1.25.12 // indirect
 	goyave.dev/copier v0.4.4 // indirect
