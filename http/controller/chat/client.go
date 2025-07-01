@@ -85,7 +85,7 @@ func (c *Client) readPump() {
 			c.readErr <- errors.Errorf("read: %w", err)
 			return
 		}
-		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+		message = bytes.TrimSpace(bytes.ReplaceAll(message, newline, space))
 		c.hub.Broadcast([]byte(fmt.Sprintf("%s: %s", c.Name, message)))
 	}
 }
